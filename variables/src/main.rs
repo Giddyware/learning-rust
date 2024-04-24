@@ -1,6 +1,6 @@
 fn main() {
 
-    let name = "Hello".to_string();
+    // let name = "Hello".to_string();
 
     // Shadowing to access variable
     // let name =greet(name);
@@ -10,27 +10,32 @@ fn main() {
     // greet(name.clone());
     // greet(name);
 
+let input  = read_line();
+println!("You typed [{input}]");
+
+   
+}
 
 
-    greet_borrow(&name);
-    let mut name_mut = "Hello".to_string();
-    greet_borrow_mut(&mut name_mut);
-
-    println!("{name_mut}");
+//function that reads Input
+fn read_line() -> String {
+    let mut input = String::new();
+    std::io::stdin().read_line(&mut input).expect( "Stdin not working");
+    input.trim().to_string()
 }
 
 
 //Borrow 
 //&-allows borrowing without mutation
-fn greet_borrow(s: &String) {
-    println!("{s}")
-}
+// fn greet_borrow(s: &String) {
+//     println!("{s}")
+// }
 
 // Borrow with mutation
-fn greet_borrow_mut(s:&mut String) {
+// fn greet_borrow_mut(s:&mut String) {
     // println!("Hello {s}")
-    *s = format!("Hello {s}");
-}
+//     *s = format!("Hello {s}");
+// }
 //Moving back and using shadowing
 // fn greet(s: String) -> String {
 //     print!("Hello {s}");
