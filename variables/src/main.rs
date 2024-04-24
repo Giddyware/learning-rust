@@ -1,25 +1,50 @@
 fn main() {
 
-println!("{}", double(5));
+    let name = "Hello".to_string();
 
-let i=5;
-let n = if i==5
-{
-    6
-}else{
-    2
-};
+    // Shadowing to access variable
+    // let name =greet(name);
+
+
+    //clone can be slow prod
+    // greet(name.clone());
+    // greet(name);
+
+
+
+    greet_borrow(&name);
+    let mut name_mut = "Hello".to_string();
+    greet_borrow_mut(&mut name_mut);
+
+    println!("{name_mut}");
 }
 
 
-fn double_or_nothing(n:i32)->i32 {
-    if(n>0){
-        return n * 2;
-    }else{
-        return 0
-    }
+//Borrow 
+//&-allows borrowing without mutation
+fn greet_borrow(s: &String) {
+    println!("{s}")
 }
 
-fn double(n:i32)->i32 {
-    n * 2
+// Borrow with mutation
+fn greet_borrow_mut(s:&mut String) {
+    // println!("Hello {s}")
+    *s = format!("Hello {s}");
 }
+//Moving back and using shadowing
+// fn greet(s: String) -> String {
+//     print!("Hello {s}");
+//     s
+// }
+
+// fn double_or_nothing(n:i32) -> i32 {
+//     if(n > 0){
+//         return n * 2;
+//     }else{
+//         return 0
+//     }
+// }
+
+// fn double(n:i32)->i32 {
+//     n * 2
+// }
