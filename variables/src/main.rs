@@ -1,26 +1,25 @@
 fn main() {
 
-    // Variables are immutable by default
-    let  n=5;
-   
-    println!("The value of n is: {n}");
+println!("{}", double(5));
 
-    //Scope
-    {
-        let n=6;
-        println!("The value of n in scope: {n}");
+let i=5;
+let n = if i==5
+{
+    6
+}else{
+    2
+};
+}
+
+
+fn double_or_nothing(n:i32)->i32 {
+    if(n>0){
+        return n * 2;
+    }else{
+        return 0
     }
-    // The value of n is: 6
+}
 
-    // Shadowing and return value
-    // let n= {
-    //     6
-    // };
-
-    // Return void
-
-    let n= {
-        let n=3;
-    };
-    println!("The value of n in scope: {n:?}");
+fn double(n:i32)->i32 {
+    n * 2
 }
