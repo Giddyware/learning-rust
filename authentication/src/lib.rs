@@ -1,4 +1,5 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, path::Path};
+use serde::{Serialize, Deserialize};
 
 pub fn greet_user(name:&str) -> String {
     format!("Hello {name}")
@@ -19,7 +20,7 @@ pub enum LoginAction {
 }
 
 
-#[derive(PartialEq, Eq, Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone, Serialize, Deserialize)]
 
 pub enum LoginRole {
     Admin,
@@ -27,7 +28,7 @@ pub enum LoginRole {
    
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct User{
     pub username: String,
     pub password: String,
@@ -51,13 +52,6 @@ impl User {
 //     ]
 //  }
 
-fn get_users () -> HashMap<String, User> {
-    let mut users = HashMap::new();
-    users.insert("admin".to_string(), User::new("admin", "password", LoginRole::Admin));
-    users.insert("adufe".to_string(), User::new("adufe", "password", LoginRole::User));
-    users
-}
-
 //  fn get_admin_users(){
  
 //     let users: Vec<String> = get_users()
@@ -66,6 +60,30 @@ fn get_users () -> HashMap<String, User> {
 //         .map(|u|u.username)
 //         .collect();
 //  }
+
+fn get_default_users () -> HashMap<String, User> {
+    let mut users = HashMap::new();
+    users.insert("admin".to_string(), User::new("admin", "password", LoginRole::Admin));
+    users.insert("adufe".to_string(), User::new("adufe", "password", LoginRole::User));
+    users
+}
+
+fn get_users () -> HashMap<String, User> {
+    let users_path = Path::new("users.json");
+    if users_path.exists() {
+        let users_json = std::fs::read_to_string(users_path).expect("Could not read users file");
+        let users: HashMap<String, User> =  serde_json::from_str(&users_json).expect("Could not parse users file");
+        users
+    } else {
+        // Create a file and return the default users
+        let users=  get_default_users();
+        let users_json = serde_json::to_string(&users).expect("Could not serialize users");
+        std::fs::write(users_path, users_json).expect("Could not write users file");
+        users
+    } 
+}
+
+
 
 pub fn login(username:&str,password:&str) -> Option<LoginAction>{
     let username = username.to_lowercase();
